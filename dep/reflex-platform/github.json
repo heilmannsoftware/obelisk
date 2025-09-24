@@ -1,8 +1,8 @@
 {
-  "owner": "reflex-frp",
+  "owner": "heilmannsoftware",
   "repo": "reflex-platform",
-  "branch": "maralorn/new-backend-wasm",
+  "branch": "maralorn/wip-wasm-experiment",
   "private": false,
-  "rev": "06cb63779260fb0b98caf0b8fcbd813bbeca2b73",
-  "sha256": "0rssfzbgm2l0pfxl4cr8gy4nxchagyag0hgw2y4cq32jsqrqchp1"
+  "rev": "4dceb7397ccd176ff6e839068683903272be97d6",
+  "sha256": "0z1madysa78pdnpb6xx8y9ib7wimxbk0jx2bkgg8c2n3ma3qx2ff"
 }

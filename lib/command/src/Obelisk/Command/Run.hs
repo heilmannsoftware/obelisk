@@ -579,6 +579,7 @@ baseGhciOptions =
   [ "-ignore-dot-ghci"
   , "-no-user-package-db"
   , "-hide-all-packages"
+  , "-j"
   , "-package-env", "-"
   ]
 

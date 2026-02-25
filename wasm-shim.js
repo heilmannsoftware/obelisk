@@ -23,7 +23,7 @@ const wasi = new WASI(args, env, fds, options);
 
 const instance_exports = {};
 const { instance } = await WebAssembly.instantiateStreaming(
-  fetch("./ghcjs/frontend.wasm"),
+  fetch("./frontend-exe/frontend.wasm"),
   {
     wasi_snapshot_preview1: wasi.wasiImport,
     ghc_wasm_jsffi: ghc_wasm_jsffi(instance_exports),

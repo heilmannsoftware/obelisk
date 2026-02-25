@@ -146,8 +146,8 @@ defaultStaticAssets = StaticAssets
 
 defaultFrontendGhcjsAssets :: StaticAssets
 defaultFrontendGhcjsAssets = StaticAssets
-  { _staticAssets_processed = "frontend.jsexe.assets"
-  , _staticAssets_unprocessed = "frontend.jsexe"
+  { _staticAssets_processed = "frontend-exe.assets"
+  , _staticAssets_unprocessed = "frontend-exe"
   }
 
 runSnapWithConfig :: MonadIO m => Config Snap a -> Snap () -> m ()
@@ -177,7 +177,7 @@ getRouteWith e = do
 
 renderAllJsPath :: Encoder Identity Identity (R (FullRoute a b)) PageName -> Text
 renderAllJsPath validFullEncoder =
-  renderObeliskRoute validFullEncoder $ FullRoute_Frontend (ObeliskRoute_Resource ResourceRoute_Ghcjs) :/ ["all.js"]
+  renderObeliskRoute validFullEncoder $ FullRoute_Frontend (ObeliskRoute_Resource ResourceRoute_FrontendExe) :/ ["launch-app.js"]
 
 serveObeliskApp
   :: (MonadSnap m, HasCookies m, MonadFail m)
@@ -192,7 +192,7 @@ serveObeliskApp urlEnc ghcjsWidgets serveStaticAsset frontendApp config = \case
   ObeliskRoute_App appRouteComponent :=> Identity appRouteRest -> serveGhcjsApp urlEnc ghcjsWidgets frontendApp config $ GhcjsAppRoute_App appRouteComponent :/ appRouteRest
   ObeliskRoute_Resource resComponent :=> Identity resRest -> case resComponent :=> Identity resRest of
     ResourceRoute_Static :=> Identity pathSegments -> serveStaticAsset pathSegments
-    ResourceRoute_Ghcjs :=> Identity pathSegments -> serveGhcjsApp urlEnc ghcjsWidgets frontendApp config $ GhcjsAppRoute_Resource :/ pathSegments
+    ResourceRoute_FrontendExe :=> Identity pathSegments -> serveGhcjsApp urlEnc ghcjsWidgets frontendApp config $ GhcjsAppRoute_Resource :/ pathSegments
     ResourceRoute_JSaddleWarp :=> Identity _ -> do
       let msg = "Error: Obelisk.Backend received jsaddle request"
       liftIO $ putStrLn $ T.unpack msg

@@ -977,7 +977,7 @@ data ObeliskRoute :: (Type -> Type) -> Type -> Type where
 -- but sane defaults are provided by 'resourceRouteSegment'
 data ResourceRoute :: Type -> Type where
   ResourceRoute_Static :: ResourceRoute [Text] -- This [Text] represents the *path in our static files directory*, not necessarily the URL path that the asset gets served at (although that will often be "/static/this/text/thing")
-  ResourceRoute_Ghcjs :: ResourceRoute [Text]
+  ResourceRoute_FrontendExe :: ResourceRoute [Text]
   ResourceRoute_JSaddleWarp :: ResourceRoute (R JSaddleWarpRoute)
   ResourceRoute_Version :: ResourceRoute ()
 
@@ -1078,7 +1078,7 @@ obeliskRouteSegment r appRouteSegment = case r of
 resourceRouteSegment :: (MonadError Text check, MonadError Text parse) => ResourceRoute a -> SegmentResult check parse a
 resourceRouteSegment = \case
   ResourceRoute_Static -> PathSegment "static" pathOnlyEncoderIgnoringQuery
-  ResourceRoute_Ghcjs -> PathSegment "ghcjs" pathOnlyEncoder
+  ResourceRoute_FrontendExe -> PathSegment "frontend-exe" pathOnlyEncoder
   ResourceRoute_JSaddleWarp -> PathSegment "jsaddle" jsaddleWarpRouteEncoder
   ResourceRoute_Version -> PathSegment "version" $ unitEncoder mempty
 

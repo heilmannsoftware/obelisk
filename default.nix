@@ -104,11 +104,12 @@ in rec {
     };
   compressedWasm = frontend: optimizationLevel: externs: pkgs.runCommand "compressedWasm" { } ''
     set -euo pipefail
-    mkdir -p $out/frontend.jsexe
-    ln -s ${pkgs.runCommand "jsffi.js" { buildInputs = [pkgs.nodejs]; } "$(${frontend.compiler}/bin/wasm32-wasi-ghc --print-libdir)/post-link.mjs -i ${frontend}/bin/frontend.wasm -o $out"} $out/frontend.jsexe/ghc_wasm_jsffi.js
-    ln -s ${pkgs.runCommand "frontend.optimized.wasm" {} "${pkgs.binaryen}/bin/wasm-opt --low-memory-unused --strip-dwarf --converge -ol 2 -s 1 ${frontend}/bin/frontend.wasm -o $out"} $out/frontend.jsexe/frontend.wasm
-    cp ${./wasm-shim.js} $out/frontend.jsexe/all.js
-    cp ${wasi-shim}  $out/frontend.jsexe/wasi-shim.js
+    outdir="$out/${frontend.pname}.jsexe"
+    mkdir -p $outdir
+    ln -s ${pkgs.runCommand "jsffi.js" { buildInputs = [pkgs.nodejs]; } "$(${frontend.compiler}/bin/wasm32-wasi-ghc --print-libdir)/post-link.mjs -i ${frontend}/bin/${frontend.pname}.wasm -o $out"} $outdir/ghc_wasm_jsffi.js
+    ln -s ${pkgs.runCommand "${frontend.pname}.optimized.wasm" {} "${pkgs.binaryen}/bin/wasm-opt --low-memory-unused --strip-dwarf --converge -ol 2 -s 1 ${frontend}/bin/${frontend.pname}.wasm -o $out"} $outdir/${frontend.pname}.wasm
+    substitute ${./wasm-shim.js} $outdir/all.js --replace-fail '@@FRONTEND_NAME@@' '${frontend.pname}'
+    cp ${wasi-shim} $outdir/wasi-shim.js
   '';
 
   serverModules = {

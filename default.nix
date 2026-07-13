@@ -98,9 +98,12 @@ in rec {
       ''}
     done
   '';
+  # NOTE: jsDelivr's /+esm endpoint re-bundles on their side (Rollup/esbuild versions embedded in the banner change over time),
+  # so this hash will drift whenever they re-bundle even though the underlying npm package is immutable.
+  # When the hash mismatches again, fetch the URL, recompute, and update below.
   wasi-shim = builtins.fetchurl {
       url = "https://cdn.jsdelivr.net/npm/@bjorn3/browser_wasi_shim@0.4.1/+esm";
-      sha256 = "sha256:1sihsq0lj2awamj5ws4vx4za3bw7fcr9n385vwx0mqgj08ri184g";
+      sha256 = "sha256-AbAwqlhd8/SeTDXPZYkvUJBaW/F9380Jfkg/QquWGFQ=";
     };
   compressedWasm = frontend: optimizationLevel: externs: pkgs.runCommand "compressedWasm" { } ''
     set -euo pipefail
